@@ -3,20 +3,24 @@
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
+static const unsigned int systraypinning = 1;   /* 0: sloppy systray follows selected monitor >0: pin systray to monitor X */
+static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
+static const int showsystray        = 1;     /* 0 means no systray */
+static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 30;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 50;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 50;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Ubuntu Nerd Font:size=11:antialias=true", "JoyPixels:pixelsize=11:antialias=true" };
 static const char dmenufont[]       = "Hack Nerd Font:size=10";
-static const char col_gray1[]       = "#18191C";
-static const char col_gray2[]       = "#212225";
-static const char col_gray3[]       = "#5F373B";
-static const char col_gray4[]       = "#884e54";
-static const char col_cyan[]        = "#E56F75";
+static const char col_gray1[]       = "#CCCEBF";
+static const char col_gray2[]       = "#C7C8BB";
+static const char col_gray3[]       = "#A7A9A3";
+static const char col_gray4[]       = "#7B8083";
+static const char col_cyan[]        = "#64676E";
 static const char col_white[]	    = "#ffffff";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
@@ -24,9 +28,9 @@ static const char *colors[][3]      = {
 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 	[SchemeStatus]  = { col_white, col_gray4,  "#000000"  }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsSel]  = { col_gray4, col_cyan,  "#000000"  }, // Tagbar left selected {text,background,not used but cannot be empty}
-    [SchemeTagsNorm]  = { col_gray3, col_gray1,  "#000000"  }, // Tagbar left unselected {text,background,not used but cannot be empty}
-    [SchemeInfoSel]  = { col_gray4, col_cyan,  "#000000"  }, // infobar middle  selected {text,background,not used but cannot be empty}
-    [SchemeInfoNorm]  = { col_gray3, col_cyan,  "#000000"  }, // infobar middle  unselected {text,background,not used but cannot be empty}
+    	[SchemeTagsNorm]  = { col_gray3, col_gray1,  "#000000"  }, // Tagbar left unselected {text,background,not used but cannot be empty}
+    	[SchemeInfoSel]  = { col_gray4, col_cyan,  "#000000"  }, // infobar middle  selected {text,background,not used but cannot be empty}
+    	[SchemeInfoNorm]  = { col_gray3, col_cyan,  "#000000"  }, // infobar middle  unselected {text,background,not used but cannot be empty}
 };
 
 static char* const autostart[][2] = { /* please replace 2 with maximum number of arguments from autostart array */
@@ -47,7 +51,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
@@ -58,7 +62,7 @@ static const Layout layouts[] = {
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
  	{ "[@]",      spiral },
- 	{ "[\\]",      dwindle },
+ 	{ "[\\]",     dwindle },
 };
 
 /* key definitions */
@@ -90,8 +94,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_u,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|LockMask,     	        XK_h,      incrgaps,       {.i = +1 } },
-	{ MODKEY|LockMask,              XK_l,      incrgaps,       {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_y,      incrgaps,       {.i = +1 } },
+	{ MODKEY|Mod1Mask,              XK_o,      incrgaps,       {.i = -1 } },
 	{ MODKEY|ShiftMask,    		XK_h,      incrogaps,      {.i = +1 } },
 	{ MODKEY|ShiftMask,    		XK_l,      incrogaps,      {.i = -1 } },
 	{ MODKEY|ControlMask,  		XK_h,      incrigaps,      {.i = +1 } },
